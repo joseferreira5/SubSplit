@@ -2,8 +2,9 @@ import React from "react";
 import Navbar from "../Navbar"
 
 function Login(){
+    
     return(
-        <React.Fragment>
+    <React.Fragment>
         <Navbar>Sub-Split!</Navbar>
         <div class="container" id="firstcon">
         <div class="d-flex justify-content-center h-100">
@@ -35,11 +36,11 @@ function Login(){
                             <div  class="d-flex justify-content-center">
                                <p>Don't have an account?</p> <a id="signup" href="#">Create accout</a>
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>
-            </React.Fragment>
+</React.Fragment>
         
            
     )
