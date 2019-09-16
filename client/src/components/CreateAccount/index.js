@@ -3,7 +3,7 @@ import React from "react";
  function CreateAccount(){
     return(
     <div class="container register-form">
-        <div class="form border ">
+        <div class="form">
         <div class="form-group">
                 <div class="row justify-content-center">
                     <div class="col-md"></div>

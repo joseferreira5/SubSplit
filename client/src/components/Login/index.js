@@ -34,7 +34,7 @@ function Login(){
                         </div>
                         <div class="card-footer">
                             <div  class="d-flex justify-content-center">
-                               <p>Don't have an account?</p> <a id="signup" href="#">Create accout</a>
+                               <p>Don't have an account?</p> <a id="signup" href="/create">Create accout</a>
                             </div>
                         </div> 
                     </div>
