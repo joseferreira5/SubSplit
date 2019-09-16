@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const User = sequelize.define("Users", {
+    const User = sequelize.define("users", {
         firstName: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -12,17 +12,24 @@ module.exports = function (sequelize, DataTypes) {
         },
         email: {
             type: DataTypes.STRING,
+            allowNull: false,
             validate: { isEmail: true }
         },
         password: {
             type: DataTypes.STRING,
+            allowNull: false,
             validate: { len: [8] }
         },
     });
 
     User.associate = function(models) {
-        User.belongsTo(models.User, {
-            as: 'primary'
+        User.hasMany(models.invites, {
+            as: 'Invites'
+        });
+
+        User.belongsToMany(models.service, {
+            as: 'Services',
+            through: models.userService,
         });
     };
 
