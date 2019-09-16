@@ -4,7 +4,7 @@ const config = {
   development: {
     username: "root",
     password: process.env.SQLDB_PASS,
-    database: "exampledb",
+    database: "subplitDB",
     host: "localhost",
     port: 3306,
     dialect: "mysql"
