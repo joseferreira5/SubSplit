@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 
 // Define middleware here
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Serve up static assets (usually on heroku)
@@ -22,9 +22,9 @@ require("./routes/apiRoutes")(app);
 
 // Send every other request to the React app
 // Define any API routes before this runs
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 var syncOptions = { force: false };
 
