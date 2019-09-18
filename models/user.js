@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const User = sequelize.define("users", {
+    const User = sequelize.define('User', {
         firstName: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -23,13 +23,13 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     User.associate = function(models) {
-        User.hasMany(models.invites, {
+        User.hasMany(models.Invites, {
             as: 'Invites'
         });
 
-        User.belongsToMany(models.service, {
+        User.belongsToMany(models.Service, {
             as: 'Services',
-            through: models.userService,
+            through: models.UserService,
         });
     };
 

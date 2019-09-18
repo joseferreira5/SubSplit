@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const Invites = sequelize.define('invites', {
+    const Invites = sequelize.define('Invites', {
         token: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,

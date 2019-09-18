@@ -1,37 +1,68 @@
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
-
-const db = require("./models");
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Passport Config
+require('./config/passport')(passport);
+
+// Configure DB
+const db = require('./models');
 
 // Define middleware here
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Express session
+app.use(
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
 }
 
 // Define API routes here
-require("./routes/apiRoutes")(app);
+require('./routes/users')(app);
+require('./routes/services')(app);
 
 // Send every other request to the React app
 // Define any API routes before this runs
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
 var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
-if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
+if (process.env.NODE_ENV === 'test') {
+    syncOptions.force = true;
 }
 
 db.sequelize.sync(syncOptions).then(function () {
