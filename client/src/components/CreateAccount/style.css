@@ -1,0 +1,15 @@
+.text-center {
+    font-family: 'Gill Sans', sans-serif;
+    font-size: 55px;
+    color: blue;
+}
+
+.empas {
+    font-family: 'Gill Sans', sans-serif;
+    font-size: 20px;
+    color: blue;
+}
+
+.body {
+    background-image: url("background.jpg");
+}
