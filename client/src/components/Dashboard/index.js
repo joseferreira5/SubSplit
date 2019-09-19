@@ -9,8 +9,12 @@ import Card from "../Card"
 class Dashboard extends Component {
     state = {
         show: false,
-        subscriptionsList:[],
-        selectedSubsciption:"" };
+        subscriptionList:[
+            
+        ],
+        selectedSubscription:"",
+        selectedPlan: ""
+   };
 
   showModal = () => {
     this.setState({ show: true });
@@ -21,15 +25,23 @@ class Dashboard extends Component {
   };
   
   selectSubscription = (sub) => {
-      console.log(sub)
-      this.setState({selectedSubsciption: sub})
-      console.log(this.state.selectedSubsciption)
+      console.log("SELECTED SUB", sub)
+      this.setState({selectedSubscription: sub})
+  }
+
+  selectPlan = (plan) => {
+      this.setState({selectedPlan: plan})
   }
 
   handleFormSubmit = () => {
-        this.setState({ subscriptionList: this.state.subscriptionsList.push(this.state.selectedSubsciption) })
-        console.log(this.state.subscriptionsList)
+        
+        const newState = [...this.state.subscriptionList]
+        newState.push({subscription: this.state.selectedSubscription, plan: this.state.selectedPlan}) 
+        this.setState({ subscriptionList: newState })
+        console.log(this.state.subscriptionList)
+        // this.setState({planList:this.state.planList.push(this.state.selectedplan)}) 
   }
+
 // const Dashboard = () => {
     render() { 
     return(
@@ -37,11 +49,11 @@ class Dashboard extends Component {
         <div className = "row1">
         <Row >
             <Col size = "md-2" >
-                <div className="card w-5 mt-5">
+                <div className="card w-3 mt-5">
                     <div className="card-body">
                         <h5 className="card-title">Add A Friend!</h5>
                         <p className="card-text">Click the button below and enter an email to send invite.</p>
-                        <a href="#" class="btn btn-primary">Button</a>
+                        <a href="#" className="btn btn-primary">Button</a>
                     </div>
                 </div>
             </Col>
@@ -51,17 +63,17 @@ class Dashboard extends Component {
                 </div>
             <Modal  show={this.state.show} handleClose={this.hideModal} handleSubmit={(e)=>this.handleFormSubmit()}>
                 <p>Add a service!</p>
-                <select class="custom-select custom-select-lg mb-3" onChange={(e)=> this.selectSubscription(e.target.value)}>
+                <select className="custom-select custom-select-lg mb-3" onChange={(e)=> this.selectSubscription(e.target.value)}>
                 <option defaultValue= "Select a Service">Select a Service</option>
                 <option value="Netflix">Netflix</option>
-                <option value="HBO Go">HBO Go</option>
+                <option value="HBO Go">HBO GO</option>
                 <option value="Hulu">Hulu</option>
                 </select>
 
-                <select class="custom-select custom-select-sm">
+                <select className="custom-select custom-select-sm" onChange={(e)=> this.selectPlan(e.target.value)}>
                 <option selected>Select Payment Package</option>
-                <option value="1">Standard</option>
-                <option value="2">Premium</option>
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
                 </select>
 
             </Modal>
@@ -73,16 +85,7 @@ class Dashboard extends Component {
         <Row>
             <Col size = "md-2"></Col>
             <Col size = "md-8">
-                <Card list={this.state.subscriptionsList}/>
-            {/* /* <div class="card card2">
-            <div class="card-header">
-            Netflix
-            </div>
-            <div class="card-body test" >
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            </div>
-            </div>
-            <div id="render"/> */ }
+                <Card list={this.state.subscriptionList}/>
             </Col>
             <Col size = "md-2"></Col>
 
