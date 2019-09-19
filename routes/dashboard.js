@@ -7,10 +7,6 @@ const db = require('../models');
 
 // Get all of the users services
 router.get('/', (req, res) => {
-  if (!req.user) {
-    res.json({});
-  }
-  console.log(req.user.id);
   db.User.findOne({ where: { id: req.user.id } }).then(user => {
     let allServices = [];
 
@@ -61,18 +57,20 @@ router.post('/addsub', (req, res) => {
   const ids = [];
   const info = {};
 
-  req.body.forEach(d => {
+  req.body.data.forEach(d => {
     ids.push(d.serviceId);
     info[d.serviceId] = d;
   });
 
-  db.Service.findAll({ where: { id: ids } }).then(service => {
-    service.forEach(service => {
-      db.User.addService(service, {
-        through: info[service.id]
+  db.User.findOne({ where: { id: req.body.userId } }).then(user => {
+    db.Service.findAll({ where: { id: ids } }).then(service => {
+      service.forEach(service => {
+        user.addService(service, {
+          through: info[service.id]
+        });
       });
+      res.send('success');
     });
-    res.send('success');
   });
 });
 
@@ -82,7 +80,7 @@ router.post('/invite', (req, res) => {
   targetEmails.forEach(email => {
     db.User.createInvite({
       email: email,
-      serviceIds: serviceIds.join(',')
+      serviceIds: serviceId.join(',')
     }).then(invite => {
       // you probably send the email from here, make sure the invite link has the token in the url
       // something like: https://subsplit.com/invite/ + invite.token
@@ -102,7 +100,7 @@ router.post('/invite', (req, res) => {
         from: process.env.TRANS_USER,
         to: invite.email,
         subject: 'SubSplit Request',
-        text: `Testing this out. Please visit localhost/3000/register/${invite.token}`
+        text: `Testing this out. Please visit localhost/3001/api/register/${invite.token}`
       };
 
       // send mail with defined transport object
@@ -117,6 +115,11 @@ router.post('/invite', (req, res) => {
       });
     });
   });
+});
+
+// Retrieve shared password through email
+router.get('/retrieve', (req, res) => {
+  db.ServiceShare.findAll({ where: { id: id } }).then(pass => {});
 });
 
 module.exports = router;

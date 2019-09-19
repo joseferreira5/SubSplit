@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 
 const db = require('../models');
 
@@ -135,7 +134,7 @@ router.post('/register/:token', (req, res) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
-            console.log(newUser.firstName);
+
             db.User.create({
               firstName: newUser.firstName,
               lastName: newUser.lastName,
