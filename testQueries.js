@@ -56,22 +56,26 @@ db.users.findOne({ where: { firstName: 'Jose' }}).then(user => {
 
 const id = 5;
 db.users.findOne({ where: { id: id } }).then(user => {
-    let allServices = [];
+  let allServices = [];
 
-    user.getServices().then(userServices => {
-        allServices = allServices.concat(userServices.map(service => {
-            return {
-                name: service.name,
-                basePrice: service.basePrice,
-                premiumPrice: service.premiumPrice,
-                password: service.userService.password,
-                priceSelected: service.userService.priceSelected,
-            };
-        }));
+  user.getServices().then(userServices => {
+    allServices = allServices.concat(
+      userServices.map(service => {
+        return {
+          name: service.name,
+          basePrice: service.basePrice,
+          premiumPrice: service.premiumPrice,
+          password: service.userService.password,
+          priceSelected: service.userService.priceSelected
+        };
+      })
+    );
 
-        // this wild boy query gets all the services that i've been invited to use,
-        // including their passwords and priceSelecteds
-        db.sequelize.query(`
+    // this query gets all the services that i've been invited to use,
+    // including their passwords and priceSelecteds
+    db.sequelize
+      .query(
+        `
             select
                 services.name, services.basePrice, services.premiumPrice,
                 userservices.password, userservices.priceSelected
@@ -80,14 +84,16 @@ db.users.findOne({ where: { id: id } }).then(user => {
                     and serviceshares.invitorId = userservices.userId
                 inner join services on services.id = serviceshares.serviceID
             where serviceshares.inviteeId = ${id};
-          `, { raw: true }).then(results => {
-            allServices = allServices.concat(results);
+          `,
+        { raw: true }
+      )
+      .then(results => {
+        allServices = allServices.concat(results);
 
-            console.log('ALL SERVICES', JSON.stringify(allServices));
-        });
-    });
+        console.log('ALL SERVICES', JSON.stringify(allServices));
+      });
+  });
 });
-
 
 /*
   // adding passwords for services
@@ -163,7 +169,7 @@ db.users.findOne({ where: { id: id } }).then(user => {
         };
       }));
 
-      // this wild boy query gets all the services that i've been invited to use,
+      // this query gets all the services that i've been invited to use,
       // including their passwords and priceSelecteds
       db.sequelize.query(`
         select

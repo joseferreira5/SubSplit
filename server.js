@@ -8,6 +8,10 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+//Import routes
+const Users = require('./routes/users');
+const Dashboard = require('./routes/dashboard');
+
 // Passport Config
 require('./config/passport')(passport);
 
@@ -20,11 +24,11 @@ app.use(express.json());
 
 // Express session
 app.use(
-    session({
-        secret: 'secret',
-        resave: true,
-        saveUninitialized: true
-    })
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+  })
 );
 
 // Passport middleware
@@ -44,17 +48,17 @@ app.use(function(req, res, next) {
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'));
+  app.use(express.static('client/build'));
 }
 
 // Define API routes here
-require('./routes/users')(app);
-require('./routes/services')(app);
+app.use('/api/user', Users);
+app.use('/api/dashboard', Dashboard);
 
 // Send every other request to the React app
 // Define any API routes before this runs
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './client/build/index.html'));
+  res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
 var syncOptions = { force: false };
@@ -62,13 +66,13 @@ var syncOptions = { force: false };
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
 if (process.env.NODE_ENV === 'test') {
-    syncOptions.force = true;
+  syncOptions.force = true;
 }
 
-db.sequelize.sync(syncOptions).then(function () {
-    app.listen(PORT, function () {
-        console.log(`🌎 ==> API server now on port ${PORT}!`);
-    });
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
+    console.log(`🌎 ==> API server now on port ${PORT}!`);
+  });
 });
 
 module.exports = app;
