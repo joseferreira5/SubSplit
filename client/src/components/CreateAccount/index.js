@@ -1,7 +1,9 @@
 import React from "react";
+import './style.css'
 
  function CreateAccount(){
     return(
+      // <div class="body" background="background.jpg">
     <div class="container register-form">
         <div class="form">
         <div class="form-group">
@@ -26,7 +28,8 @@ import React from "react";
                       <label class="empas" for="exampleInputPassword1">Confirm Password</label>
                       <input type="password" class="form-control" id="password" placeholder="Password"/>
                     </div>
-                    <button type="submit" id="newuserbtn" class="btn">Submit</button>
+                    {/* <button type="submit" id="newuserbtn" class="btn">Submit</button>  */}
+                    <button type="button" class="btn btn-primary">Submit</button>
                     </div>
                     <div class="col-md"></div>
                     </div>
