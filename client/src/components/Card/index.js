@@ -3,16 +3,18 @@ import React from "react";
 
 
 const Card = (props) => {
+        console.log("MY POOPS",props)
         return props.list.map(item =>(
-        <div class="card card2">
+        <div key={Math.random(10000000)} class="card card2">
             <div class="card-header">
-                {item}
+                {item.subscription}
+                
             </div>
             <div class="card-body test">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            </div>
+                {item.plan}
+            </div >
         </div>
-      ))
+        )) 
 }
 
 
