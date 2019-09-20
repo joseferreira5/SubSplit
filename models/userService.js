@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const UserService = sequelize.define('userService', {
+    const UserService = sequelize.define('UserService', {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
