@@ -1,7 +1,9 @@
+require('dotenv');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 const db = require('../models');
 
@@ -170,18 +172,39 @@ router.post('/register/:token', (req, res) => {
 
 // User login
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash: true
+  passport.authenticate('login', (err, user, info) => {
+    if (err) {
+      console.log(err);
+    }
+
+    if (info !== undefined) {
+      console.log(info.message);
+      res.send(info.message);
+    } else {
+      req.logIn(user, err => {
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+        res.status(200).send({
+          auth: true,
+          token: token,
+          message: 'Login successful'
+        });
+      });
+    }
   })(req, res, next);
 });
+
+router.get(
+  '/cindy',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    console.log(req.user);
+    res.json({ user: req.user });
+  }
+);
 
 // Logout
 router.get('/logout', (req, res) => {
   req.logout();
-  req.flash('success_msg', 'You are logged out');
-  res.redirect('/users/login');
 });
 
 module.exports = router;
