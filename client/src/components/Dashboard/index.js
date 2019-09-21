@@ -9,9 +9,7 @@ import Card from "../Card"
 class Dashboard extends Component {
     state = {
         show: false,
-        subscriptionList:[
-            
-        ],
+        subscriptionList:[],
         selectedSubscription:"",
         selectedPlan: ""
    };
@@ -53,7 +51,7 @@ class Dashboard extends Component {
                     <div className="card-body">
                         <h5 className="card-title">Add A Friend!</h5>
                         <p className="card-text">Click the button below and enter an email to send invite.</p>
-                        <a href="#" className="btn btn-primary">Button</a>
+                        <a href="/addfriend" className="btn btn-primary">Button</a>
                     </div>
                 </div>
             </Col>

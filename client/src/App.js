@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Loginpage from './pages/Loginpage';
 import CreateAcc from './pages/CreateAcc';
 import Dash from './pages/Dash';
+import addfriend from "./pages/Addfriend"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path='/login' component={Loginpage} />
           <Route exact path='/create' component={CreateAcc} />
           <Route exact path='/dash' component={Dash} />
+          <Route exact path='/addFriend' component={addfriend} />
         </Switch>
       </div>
     </Router>

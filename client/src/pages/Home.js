@@ -10,9 +10,9 @@ function Home() {
         /* <Navbar>Sub-Split!</Navbar> */
         <Container>
         <Navbar>Sub-Split!</Navbar>
-            <Row>
-                <Col size ="md-12 info"  ><h3 className = "mt-5">Welcome to Sub-spilt. Were you can manage your subscriptions and share them with friends!.</h3></Col>
-                
+            <Row className = "bob">
+                <Col size ="md-8 info"  ><h2 >Welcome to Sub-Spilt!</h2><p className = "mt-5">Were you can manage your subscriptions and share them with friends!</p></Col>
+                <Col size = "md-4 info"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPtv1VM2miLPNv-_iR-RiNrfS8_eFc2DAblOYKDL4wieO0_1L8w" alt="Smiley face"/></Col>               
             </Row>
         </Container>
 

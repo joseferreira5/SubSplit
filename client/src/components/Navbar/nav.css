@@ -1,8 +1,24 @@
-.title {
-    float: left;
+h1 {
+  font-family: 'Titillium Web', sans-serif;
+  color: #4D685A;
+  font-size: 75px;
+}
+.navbar {
+  background-color: #50FFB1;
+}
 
-  }
+body{
+  background-image: url("https://thumbs.dreamstime.com/z/sandwiches-pattern-background-sandwiches-pattern-background-cute-background-124023238.jpg")no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   
-.login {
-    float: right;
-  }
+}
+
+.nav-link{
+  font-family: 'Titillium Web', sans-serif;
+  color: #4D685A;
+  font-size: 25px;
+}
+

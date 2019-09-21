@@ -1,4 +1,24 @@
 .col-info {
     
-    background-color: lightblue;
+}
+
+.col-info {
+
+    min-height: 50vh;
+}
+
+p {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 300;
+    color: #6d6d6d;
+ 
+}
+
+h2 {
+    font-family: 'Roboto Mono', monospace;
+
+}
+
+img{
+    transform: rotate(90deg);
 }
