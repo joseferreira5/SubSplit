@@ -12,7 +12,9 @@ class Dashboard extends Component {
     subscriptionList: [],
     selectedService: '',
     selectedPlan: '',
-    password: ''
+    password: '',
+    showShareModal: false,
+    shareSubscriptionId: null
   };
 
   componentDidMount() {
@@ -59,18 +61,37 @@ class Dashboard extends Component {
       password
     };
 
-    API.addSub(data).then(() => {
-      const newSubscription = {
-        ...this.getServiceById(serviceId),
-        ...data
-      };
-
+    API.addSub(data).then(response => {
       this.setState({
-        subscriptionList: [...this.state.subscriptionList, newSubscription],
+        subscriptionList: [...this.state.subscriptionList, response.data],
         selectedService: '',
         selectedPlan: 'basePrice',
         password: '',
         show: false
+      });
+    });
+  };
+
+  handleShareClick = id => {
+    this.setState({
+      showShareModal: true,
+      shareSubscriptionId: id
+    });
+  };
+
+  handleShareSubmit = e => {
+    e.preventDefault();
+
+    const data = {
+      email: this.state.shareEmail,
+      serviceId: this.state.shareSubscriptionId
+    };
+
+    API.invite(data).then(response => {
+      this.setState({
+        showShareModal: false,
+        shareEmail: '',
+        shareSubscriptionId: null
       });
     });
   };
@@ -105,33 +126,21 @@ class Dashboard extends Component {
     );
   }
 
-  // const Dashboard = () => {
   render() {
     const {
       show,
+      showShareModal,
       serviceList,
       subscriptionList,
       selectedService,
-      password
+      password,
+      shareEmail
     } = this.state;
 
     return (
       <Container>
         <div className='row1'>
           <Row>
-            <Col size='md-2'>
-              <div className='card w-3 mt-5'>
-                <div className='card-body'>
-                  <h5 className='card-title'>Add A Friend!</h5>
-                  <p className='card-text'>
-                    Click the button below and enter an email to send invite.
-                  </p>
-                  <a href='#' className='btn btn-primary'>
-                    Button
-                  </a>
-                </div>
-              </div>
-            </Col>
             <Col size='md-8'>
               <div className='border rounded mt-5'>
                 <h3 className='d-flex justify-content-center'>
@@ -184,10 +193,33 @@ class Dashboard extends Component {
         <Row>
           <Col size='md-2'></Col>
           <Col size='md-8'>
-            <Card list={subscriptionList} />
+            <Card
+              list={subscriptionList}
+              onShareClick={this.handleShareClick}
+            />
           </Col>
           <Col size='md-2'></Col>
         </Row>
+
+        <Modal
+          show={showShareModal}
+          handleClose={() =>
+            this.setState({
+              showShareModal: false,
+              shareSubscriptionId: null
+            })
+          }
+          handleSubmit={this.handleShareSubmit}>
+          <input
+            placeholder='Email'
+            value={shareEmail}
+            onChange={e => {
+              this.setState({
+                shareEmail: e.target.value
+              });
+            }}
+          />
+        </Modal>
       </Container>
     );
   }

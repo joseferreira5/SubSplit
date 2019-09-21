@@ -15,11 +15,13 @@ router.get(
     req.user.getServices().then(userServices => {
       let allServices = userServices.map(service => {
         return {
+          id: service.id,
           name: service.name,
           basePrice: service.basePrice,
           premiumPrice: service.premiumPrice,
           password: service.UserService.password,
-          priceSelected: service.UserService.priceSelected
+          priceSelected: service.UserService.priceSelected,
+          owner: true
         };
       });
 
@@ -28,11 +30,13 @@ router.get(
           `
                   select
                       services.name, services.basePrice, services.premiumPrice,
-                      userservices.password, userservices.priceSelected
+                      userservices.password, userservices.priceSelected,
+                      concat(users.firstName, ' ', users.lastName) as ownerName
                   from serviceshares
                       inner join userservices on serviceshares.serviceId = userservices.serviceId
                         and serviceshares.invitorId = userservices.userId
                       inner join services on services.id = serviceshares.serviceId
+                      inner join users on serviceshares.invitorId = users.id
                   where serviceshares.inviteeId = ${req.user.id};
               `
         )
@@ -75,7 +79,12 @@ router.post(
       });
 
       res.status(200).json({
-        success: true
+        id: service.id,
+        name: service.name,
+        basePrice: service.basePrice,
+        premiumPrice: service.premiumPrice,
+        priceSelected: priceSelected,
+        owner: true
       });
     });
   }
@@ -86,46 +95,44 @@ router.post(
   '/invite',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    const { targetEmails, serviceIds } = req.body;
+    const { email, serviceId } = req.body;
 
-    targetEmails.forEach(email => {
-      req.user
-        .createInvite({
-          email: email,
-          serviceIds: serviceIds.join(',')
-        })
-        .then(invite => {
-          // you probably send the email from here, make sure the invite link has the token in the url
-          // something like: https://subsplit.com/invite/ + invite.token
-          // that url ---------^ should display the user creation form
+    req.user
+      .createInvite({
+        email: email,
+        serviceIds: serviceId
+      })
+      .then(invite => {
+        // you probably send the email from here, make sure the invite link has the token in the url
+        // something like: https://subsplit.com/invite/ + invite.token
+        // that url ---------^ should display the user creation form
 
-          let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: process.env.EMAIL_USER,
-              pass: process.env.EMAIL_PASS
-            }
-          });
-
-          let mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: invite.email,
-            subject: 'SubSplit Request',
-            html: `<h1>Testing this out</h1><p>Please visit https://sub-split.herokuapp.com/user/register/${invite.token}</p>`
-          };
-
-          // send mail with defined transport object
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.log(error);
-            }
-            console.log('Message sent: %s', info.messageId);
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-            res.send('Email has been sent');
-          });
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
         });
-    });
+
+        let mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: invite.email,
+          subject: 'SubSplit Request',
+          html: `<h1>Testing this out</h1><p>Please visit https://sub-split.herokuapp.com/user/register/${invite.token}</p>`
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message sent: %s', info.messageId);
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+          res.send('Email has been sent');
+        });
+      });
   }
 );
 

@@ -1,10 +1,26 @@
 import React from 'react';
 
-const Card = props => {
-  return props.list.map(item => (
-    <div key={item.id} class='card card2'>
-      <div class='card-header'>{item.name}</div>
-      <div class='card-body test'>${item[item.priceSelected]}</div>
+const Card = ({ list, onShareClick }) => {
+  return list.map(item => (
+    <div key={item.id} className='card card2'>
+      <div className='card-header'>
+        {item.name}
+        <div className='float-right'>
+          {item.owner ? (
+            <a
+              href='#'
+              onClick={e => {
+                e.stopPropagation();
+                onShareClick(item.id);
+              }}>
+              Share
+            </a>
+          ) : (
+            item.ownerName
+          )}
+        </div>
+      </div>
+      <div className='card-body test'>${item[item.priceSelected]}</div>
     </div>
   ));
 };

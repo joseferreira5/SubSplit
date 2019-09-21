@@ -86,6 +86,8 @@ router.post('/register/:token', (req, res) => {
   db.Invites.findOne({ where: { token: token } }).then(user => {
     if (!user) {
       errors.push({ msg: 'Invite URL is incorrect' });
+      res.send(200);
+      return;
     }
   });
 
@@ -190,15 +192,6 @@ router.post('/login', (req, res, next) => {
     }
   })(req, res, next);
 });
-
-router.get(
-  '/cindy',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    console.log(req.user);
-    res.json({ user: req.user });
-  }
-);
 
 // Logout
 router.get('/logout', (req, res) => {

@@ -11,16 +11,18 @@ import Navbar from './components/Navbar';
 function App() {
   return (
     <Router>
-      <Wrapper>
+      <div>
         <Navbar />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about' component={Home} />
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/register' component={Registration} />
-          <ProtectedRoute exact path='/dashboard' component={Dashboard} />
-        </Switch>
-      </Wrapper>
+        <Wrapper>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/about' component={Home} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Registration} />
+            <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+          </Switch>
+        </Wrapper>
+      </div>
     </Router>
   );
 }
