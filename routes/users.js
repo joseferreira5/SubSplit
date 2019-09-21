@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.json({
+    res.status(400).json({
       errors,
       firstName,
       lastName,
@@ -65,11 +65,9 @@ router.post('/register', (req, res) => {
               password: newUser.password
             })
               .then(user => {
-                req.flash(
-                  'success_msg',
-                  'You are now registered and can log in'
-                );
-                res.redirect('/users/login');
+                res.json({
+                  success: true
+                });
               })
               .catch(err => console.log(err));
           });

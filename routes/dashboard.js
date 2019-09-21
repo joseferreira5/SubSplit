@@ -47,32 +47,36 @@ router.get(
   }
 );
 
+router.get('/services/', (req, res) => {
+  db.Service.findAll({}).then(services => {
+    res.json(services);
+  });
+});
+
 // Add a service
-/* the frontend must collect an array of objects with the following data: 
-    [{
+/* the frontend must collect an object with the following data: 
+    {
       serviceId: 1,
       priceSelected: 'basicPrice' or 'premiumPrice',
       password: '',
-    }] */
+    } */
 router.post(
   '/addsub',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    const ids = [];
-    const info = {};
+    const { serviceId, priceSelected, password } = req.body;
 
-    req.body.data.forEach(d => {
-      ids.push(d.serviceId);
-      info[d.serviceId] = d;
-    });
-
-    db.Service.findAll({ where: { id: ids } }).then(service => {
-      service.forEach(service => {
-        req.user.addService(service, {
-          through: info[service.id]
-        });
+    db.Service.findOne({ where: { id: serviceId } }).then(service => {
+      req.user.addService(service, {
+        through: {
+          password,
+          priceSelected
+        }
       });
-      res.send('success');
+
+      res.status(200).json({
+        success: true
+      });
     });
   }
 );
@@ -107,7 +111,7 @@ router.post(
             from: process.env.EMAIL_USER,
             to: invite.email,
             subject: 'SubSplit Request',
-            text: `Testing this out. Please visit localhost/3001/api/user/register/${invite.token}`
+            html: `<h1>Testing this out</h1><p>Please visit https://sub-split.herokuapp.com/user/register/${invite.token}</p>`
           };
 
           // send mail with defined transport object

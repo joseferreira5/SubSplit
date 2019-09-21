@@ -1,44 +1,45 @@
 import axios from 'axios';
 
-function getToken() {
-  const token = localStorage.getItem('subsplittoken');
+import auth from './auth';
 
-  if (!token) {
-    // send to login
-  } else {
-    return {
-      headers: {
-        Authorization: `JWT ${token}`
-      }
-    };
-  }
+function getHeaders() {
+  const token = auth.getToken();
+
+  return {
+    headers: {
+      Authorization: `JWT ${token}`
+    }
+  };
 }
 
 export default {
   userLogin: function(credentials) {
     return axios.post('/api/user/login/', credentials).then(({ data }) => {
-      localStorage.setItem('subsplittoken', data.token);
+      console.log('part one');
+      auth.setToken(data.token);
     });
   },
   userLogout: function() {
-    return axios.post('/api/users/logout/');
+    return axios.post('/api/users/logout/').then(() => {
+      auth.removeToken();
+    });
   },
-  userRegistration: function() {
-    return axios.post('/api/users/registration/');
+  userRegistration: function(data) {
+    return axios.post('/api/user/register', data);
   },
   inviteeRegistration: function(inviteToken) {
-    return axios.post('/api/users/registration/' + inviteToken);
+    return axios.post('/api/user/registration/' + inviteToken);
   },
-  getSubs: function() {
-    return axios.get('/api/dashboard/', getToken());
+  getSubs: () => {
+    return axios.get('/api/dashboard/', getHeaders());
   },
-  addSub: function() {
-    return axios.post('/api/dashboard/addsub/', getToken());
+  getServices: () => {
+    return axios.get('api/dashboard/services/');
   },
-  invite: function() {
-    return axios.post('/api/dashboard/invite/', getToken());
+  addSub: data => {
+    return axios.post('/api/dashboard/addsub/', data, getHeaders());
   },
-  cindy: function() {
-    return axios.get('/api/user/cindy', getToken());
+  invite: () => {
+    return axios.post('/api/dashboard/invite/', getHeaders());
   }
 };
