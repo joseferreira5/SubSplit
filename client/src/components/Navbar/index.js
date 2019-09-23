@@ -11,7 +11,7 @@ const Navbar = props => {
     // </div>
     //
 
-    <nav className='navbar navbar-expand-lg navbar-light bg-light container '>
+    <nav className='navbar navbar-expand-lg navbar-light container '>
       <a className='navbar-brand' href='/'>
         <h1>Sub-Split</h1>
       </a>
