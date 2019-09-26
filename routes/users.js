@@ -156,11 +156,9 @@ router.post('/register/:token', (req, res) => {
                   invite.destroy().then();
                 });
 
-                req.flash(
-                  'success_msg',
-                  'You are now registered and can log in'
-                );
-                res.redirect('/users/login');
+                res.json({
+                  success: true
+                });
               })
               .catch(err => console.log(err));
           });
@@ -169,6 +167,21 @@ router.post('/register/:token', (req, res) => {
     });
   }
 });
+
+// Get User Info
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const user = {
+      user: {
+        name: req.user.firstName + ' ' + req.user.lastName,
+        email: req.user.email
+      }
+    };
+    res.json(user);
+  }
+);
 
 // User login
 router.post('/login', (req, res, next) => {
@@ -186,6 +199,10 @@ router.post('/login', (req, res, next) => {
         res.status(200).send({
           auth: true,
           token: token,
+          user: {
+            name: user.firstName + ' ' + user.lastName,
+            email: user.email
+          },
           message: 'Login successful'
         });
       });
@@ -196,6 +213,10 @@ router.post('/login', (req, res, next) => {
 // Logout
 router.get('/logout', (req, res) => {
   req.logout();
+  console.log('user is logged out');
+  res.json({
+    message: 'Logout successful'
+  });
 });
 
 module.exports = router;

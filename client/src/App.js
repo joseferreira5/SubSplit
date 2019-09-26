@@ -8,25 +8,46 @@ import Dashboard from './pages/Dashboard';
 import Wrapper from './components/Wrapper';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import auth from './utils/auth';
+import API from './utils/API';
 
 class App extends Component {
   state = {
-    user: {
-      name: ''
-    },
-    authState: false
+    user: null
+  };
+
+  componentDidMount() {
+    if (this.state.user === null && auth.getToken()) {
+      API.getUserInfo().then(user => {
+        this.setState({
+          user
+        });
+      });
+    }
+  }
+
+  handleLogin = user => {
+    this.setState({ user });
+  };
+
+  handleLogout = () => {
+    this.setState({ user: null });
   };
 
   render() {
     return (
       <Router>
         <div>
-          <Navbar />
+          <Navbar user={this.state.user} onLogout={this.handleLogout} />
           <Wrapper>
             <Switch>
               <Route exact path='/' component={Home} />
               <Route exact path='/about' component={Home} />
-              <Route exact path='/login' component={Login} />
+              <Route
+                exact
+                path='/login'
+                render={() => <Login onLogin={this.handleLogin} />}
+              />
               <Route exact path='/register' component={Registration} />
               <ProtectedRoute exact path='/dashboard' component={Dashboard} />
             </Switch>

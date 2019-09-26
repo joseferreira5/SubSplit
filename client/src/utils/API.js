@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import auth from './auth';
 
 function getHeaders() {
@@ -15,13 +14,18 @@ function getHeaders() {
 export default {
   userLogin: function(credentials) {
     return axios.post('/api/user/login', credentials).then(({ data }) => {
-      console.log('part one');
       auth.setToken(data.token);
+      return data.user;
     });
   },
   userLogout: function() {
-    return axios.post('/api/users/logout').then(() => {
+    return axios.get('/api/user/logout').then(() => {
       auth.removeToken();
+    });
+  },
+  getUserInfo: () => {
+    return axios.get('api/user', getHeaders()).then(({ data }) => {
+      return data.user;
     });
   },
   userRegistration: function(data) {

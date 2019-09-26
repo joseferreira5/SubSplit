@@ -23,22 +23,22 @@ class Home extends Component {
             <p>
               <strong>
                 Bill by yourself
-                <img className='npc ml-1' src={npc} />: Full
+                <img className='npc ml-1' src={npc} alt='person icon' />: Full
               </strong>
             </p>
             <p>
               <strong>
                 Bill split
-                <img className='npc ml-1' src={npc} />{' '}
-                <img className='npc' src={npc} />: 1/2
+                <img className='npc ml-1' src={npc} alt='person icon' />{' '}
+                <img className='npc' src={npc} alt='person icon' />: 1/2
               </strong>
             </p>
             <p>
               <strong>
                 Bill split
-                <img className='npc ml-1' src={npc} />{' '}
-                <img className='npc' src={npc} />{' '}
-                <img className='npc' src={npc} />: 1/3
+                <img className='npc ml-1' src={npc} alt='person icon' />{' '}
+                <img className='npc' src={npc} alt='person icon' />{' '}
+                <img className='npc' src={npc} alt='person icon' />: 1/3
               </strong>
             </p>
             <small className='text-muted'>You probly get it . . .</small>

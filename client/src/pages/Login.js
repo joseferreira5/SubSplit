@@ -24,7 +24,8 @@ class Login extends Component {
     API.userLogin({
       email,
       password
-    }).then(() => {
+    }).then(user => {
+      this.props.onLogin(user);
       this.setState({
         loginSuccess: true
       });
