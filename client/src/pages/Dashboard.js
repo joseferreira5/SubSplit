@@ -12,6 +12,7 @@ class Dashboard extends Component {
     subscriptionList: [],
     selectedService: '',
     selectedPlan: '',
+    username: '',
     password: '',
     showShareModal: false,
     shareSubscriptionId: null
@@ -53,11 +54,13 @@ class Dashboard extends Component {
   handleFormSubmit = () => {
     const serviceId = this.state.selectedService;
     const priceSelected = this.state.selectedPlan;
+    const username = this.state.username;
     const password = this.state.password;
 
     const data = {
       serviceId,
       priceSelected,
+      username,
       password
     };
 
@@ -66,6 +69,7 @@ class Dashboard extends Component {
         subscriptionList: [...this.state.subscriptionList, response.data],
         selectedService: '',
         selectedPlan: 'basePrice',
+        username: '',
         password: '',
         show: false
       });
@@ -133,6 +137,7 @@ class Dashboard extends Component {
       serviceList,
       subscriptionList,
       selectedService,
+      username,
       password,
       shareEmail
     } = this.state;
@@ -160,6 +165,16 @@ class Dashboard extends Component {
                   onChange={e =>
                     this.setState({
                       password: e.target.value
+                    })
+                  }
+                />
+                <input
+                  type='text'
+                  placeholder='Username'
+                  value={username}
+                  onChange={e =>
+                    this.setState({
+                      username: e.target.value
                     })
                   }
                 />

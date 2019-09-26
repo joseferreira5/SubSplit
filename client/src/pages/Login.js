@@ -25,10 +25,22 @@ class Login extends Component {
       email,
       password
     }).then(user => {
-      this.props.onLogin(user);
-      this.setState({
-        loginSuccess: true
-      });
+      const { inviteToken, onLogin, onInviteAccepted } = this.props;
+      const onSuccess = () =>
+        this.setState({
+          loginSuccess: true
+        });
+
+      onLogin(user);
+
+      if (inviteToken) {
+        API.acceptInvite(inviteToken).then(() => {
+          onInviteAccepted();
+          onSuccess();
+        });
+      } else {
+        onSuccess();
+      }
     });
   };
 

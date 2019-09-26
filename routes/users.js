@@ -77,96 +77,38 @@ router.post('/register', (req, res) => {
   }
 });
 
-// Register invitee
-router.post('/register/:token', (req, res) => {
-  const { firstName, lastName, email, password, password2 } = req.body;
-  const token = req.params.token;
-  let errors = [];
+// accept invitation
+router.post(
+  '/invite/:token/accept',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const token = req.params.token;
+    const { user } = req;
 
-  db.Invites.findOne({ where: { token: token } }).then(user => {
-    if (!user) {
-      errors.push({ msg: 'Invite URL is incorrect' });
-      res.send(200);
-      return;
-    }
-  });
+    db.Invites.findOne({ where: { token: token } }).then(invite => {
+      if (!invite) {
+        res.status(404).json({ msg: 'Invite URL is incorrect' });
+        return;
+      }
 
-  if (!firstName || !lastName || !email || !password || !password2) {
-    errors.push({ msg: 'Please enter all fields' });
-  }
-
-  if (password != password2) {
-    errors.push({ msg: 'Passwords do not match' });
-  }
-
-  if (password.length < 8) {
-    errors.push({ msg: 'Password must be at least 6 characters' });
-  }
-
-  if (errors.length > 0) {
-    res.json({
-      errors,
-      firstName,
-      lastName,
-      email,
-      password,
-      password2
-    });
-  } else {
-    db.User.findOne({ where: { email: email } }).then(user => {
-      if (user) {
-        errors.push({ msg: 'Email already exists' });
-        res.json({
-          errors,
-          firstName,
-          lastName,
-          email,
-          password,
-          password2
-        });
-      } else {
-        const newUser = {
-          firstName,
-          lastName,
-          email,
-          password
-        };
-
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-
-            db.User.create({
-              firstName: newUser.firstName,
-              lastName: newUser.lastName,
-              email: newUser.email,
-              password: newUser.password
-            })
-              .then(user => {
-                db.ServiceShare.bulkCreate(
-                  invite.serviceIds.split(',').map(id => {
-                    return {
-                      invitorId: invite.userId,
-                      inviteeId: user.id,
-                      serviceId: id
-                    };
-                  })
-                ).then(() => {
-                  invite.destroy().then();
-                });
-
-                res.json({
-                  success: true
-                });
-              })
-              .catch(err => console.log(err));
+      db.ServiceShare.bulkCreate(
+        invite.serviceIds.split(',').map(id => {
+          return {
+            invitorId: invite.UserId,
+            inviteeId: user.id,
+            serviceId: id
+          };
+        })
+      ).then(() => {
+        invite.destroy().then(() => {
+          res.json({
+            msg: 'Invite accepted successfully'
           });
         });
-      }
+      });
     });
   }
-});
+);
 
 // Get User Info
 router.get(

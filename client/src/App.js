@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Dashboard from './pages/Dashboard';
+import Invitation from './pages/Invitation';
 import Wrapper from './components/Wrapper';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,7 +14,8 @@ import API from './utils/API';
 
 class App extends Component {
   state = {
-    user: null
+    user: null,
+    inviteToken: null
   };
 
   componentDidMount() {
@@ -34,11 +36,19 @@ class App extends Component {
     this.setState({ user: null });
   };
 
+  handleInviteAccepted = () => {
+    this.setState({
+      inviteToken: null
+    });
+  };
+
   render() {
+    const { user, inviteToken } = this.state;
+
     return (
       <Router>
         <div>
-          <Navbar user={this.state.user} onLogout={this.handleLogout} />
+          <Navbar user={user} onLogout={this.handleLogout} />
           <Wrapper>
             <Switch>
               <Route exact path='/' component={Home} />
@@ -46,7 +56,27 @@ class App extends Component {
               <Route
                 exact
                 path='/login'
-                render={() => <Login onLogin={this.handleLogin} />}
+                render={() => (
+                  <Login
+                    inviteToken={inviteToken}
+                    onLogin={this.handleLogin}
+                    onInviteAccepted={this.handleInviteAccepted}
+                  />
+                )}
+              />
+              <Route
+                path='/invite/:token'
+                render={({ match }) => (
+                  <Invitation
+                    token={match.params.token}
+                    onInviteAccepted={this.handleInviteAccepted}
+                    onInviteRequested={t =>
+                      this.setState({
+                        inviteToken: t
+                      })
+                    }
+                  />
+                )}
               />
               <Route exact path='/register' component={Registration} />
               <ProtectedRoute exact path='/dashboard' component={Dashboard} />

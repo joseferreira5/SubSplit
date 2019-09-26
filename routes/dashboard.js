@@ -19,6 +19,7 @@ router.get(
           name: service.name,
           basePrice: service.basePrice,
           premiumPrice: service.premiumPrice,
+          username: service.UserService.username,
           password: service.UserService.password,
           priceSelected: service.UserService.priceSelected,
           owner: true
@@ -30,7 +31,7 @@ router.get(
           `
                   select
                       services.name, services.basePrice, services.premiumPrice,
-                      userservices.password, userservices.priceSelected,
+                      userservices.username, userservices.password, userservices.priceSelected,
                       concat(users.firstName, ' ', users.lastName) as ownerName
                   from serviceshares
                       inner join userservices on serviceshares.serviceId = userservices.serviceId
@@ -68,11 +69,12 @@ router.post(
   '/addsub',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    const { serviceId, priceSelected, password } = req.body;
+    const { serviceId, priceSelected, username, password } = req.body;
 
     db.Service.findOne({ where: { id: serviceId } }).then(service => {
       req.user.addService(service, {
         through: {
+          username,
           password,
           priceSelected
         }
@@ -119,7 +121,7 @@ router.post(
           from: process.env.EMAIL_USER,
           to: invite.email,
           subject: 'SubSplit Request',
-          html: `<h1>Testing this out</h1><p>Please visit https://sub-split.herokuapp.com/user/register/${invite.token}</p>`
+          html: `<h1>Testing this out</h1><p>Please visit <a href="https://sub-split.herokuapp.com/invite/${invite.token}">here.</a></p>`
         };
 
         // send mail with defined transport object
@@ -141,7 +143,9 @@ router.get(
   '/retrieve',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    db.ServiceShare.findAll({ where: { id: id } }).then(pass => {});
+    db.ServiceShare.findAll({ where: { id: req.user.id } }).then(user => {
+      res.json();
+    });
   }
 );
 

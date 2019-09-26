@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import './nav.css';
 
@@ -15,14 +16,14 @@ class Navbar extends Component {
     return (
       <Fragment>
         <li className='nav-item'>
-          <a className='nav-link' href='/login'>
+          <Link className='nav-link' to='/login'>
             Login
-          </a>
+          </Link>
         </li>
         <li className='nav-item'>
-          <a className='nav-link' href='/register'>
+          <Link className='nav-link' to='/register'>
             Register
-          </a>
+          </Link>
         </li>
       </Fragment>
     );
@@ -35,14 +36,14 @@ class Navbar extends Component {
       <Fragment>
         <li className='nav-text'>Welcome {user.name}</li>
         <li className='nav-item'>
-          <a className='nav-link' href='/dashboard'>
+          <Link className='nav-link' to='/dashboard'>
             Dashboard
-          </a>
+          </Link>
         </li>
         <li className='nav-item'>
-          <a className='nav-link' href='/' onClick={this.handleLogout}>
+          <Link className='nav-link' to='/' onClick={this.handleLogout}>
             Logout
-          </a>
+          </Link>
         </li>
       </Fragment>
     );
@@ -54,9 +55,9 @@ class Navbar extends Component {
     return (
       <nav className='navbar sticky-top navbar-expand-lg navbar-light'>
         <div className='container'>
-          <a className='navbar-brand' href='/'>
+          <Link className='navbar-brand' to='/'>
             <h1>Sub-Split</h1>
-          </a>
+          </Link>
           <ul className='nav justify-content-end'>
             {user ? this.renderAuth() : this.renderUnauth()}
           </ul>

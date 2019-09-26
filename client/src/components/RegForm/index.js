@@ -15,17 +15,13 @@ const RegForm = ({
   onSubmit
 }) => {
   return (
-    // <div className="body" background="background.jpg">
-
     <div className='container register-form mt-5 '>
-
       <form className='form' onSubmit={onSubmit}>
         <div className='form-group'>
           <div className='row justify-content-center'>
             <div className='col-md'></div>
 
             <div className='col-md secondcon rounded pb-3'>
-
               <h3 className='text-center'>Please Sign up!</h3>
               {/* first name */}
               <label className='empas' htmlFor='firstName'>
@@ -94,8 +90,7 @@ const RegForm = ({
               />
 
               <button type='submit' className='submit mt-2'>
-
-               
+                Register
               </button>
             </div>
             <div className='col-md'></div>
