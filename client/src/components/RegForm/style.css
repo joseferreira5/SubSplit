@@ -1,15 +1,20 @@
 .text-center {
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 55px;
-    color: blue;
+
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 30px;
+    color:#3C896D;
 }
 
 .empas {
-    font-family: 'Gill Sans', sans-serif;
-    font-size: 20px;
-    color: blue;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    color:#3C896D
 }
 
-.body {
-    background-image: url("background.jpg");
+
+.secondcon{
+    border: 1px #4D685A;
+    border-style: solid;
 }
+
+
