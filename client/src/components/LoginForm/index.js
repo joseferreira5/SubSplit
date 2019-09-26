@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginForm = ({
   email,
@@ -45,7 +46,7 @@ const LoginForm = ({
           <div className='card-footer'>
             <div className='d-flex justify-content-center'>
               <p>Don't have an account?</p>{' '}
-              <a href='/register'>Register Here</a>
+              <Link to='/register'>Register Here</Link>
             </div>
           </div>
         </div>

@@ -3,9 +3,7 @@ import './style.css';
 
 const Footer = () => {
   return (
-
-    <footer className='footer navbar-fixed-bottom mt-5'>
-
+    <footer className='footer fixed-bottom mt-5'>
       <span>Copyright &copy; Sub-Split</span>
     </footer>
   );

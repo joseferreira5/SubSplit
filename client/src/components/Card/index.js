@@ -7,14 +7,13 @@ const Card = ({ list, onShareClick }) => {
         {item.name}
         <div className='float-right'>
           {item.owner ? (
-            <a
-              href='#'
+            <button
               onClick={e => {
                 e.stopPropagation();
                 onShareClick(item.id);
               }}>
               Share
-            </a>
+            </button>
           ) : (
             item.ownerName
           )}

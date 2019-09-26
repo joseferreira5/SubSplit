@@ -1,52 +1,65 @@
 import React, { Component, Fragment } from 'react';
-import auth from '../../utils/auth';
+import { Link } from 'react-router-dom';
+import API from '../../utils/API';
 import './nav.css';
 
 class Navbar extends Component {
-  state = {
-    authState: false
+  handleLogout = e => {
+    e.preventDefault();
+
+    API.userLogout().then(() => {
+      this.props.onLogout();
+    });
   };
 
-  componentDidMount() {
-    if (auth.isAuthenthicated()) {
-      this.setState({ authState: true });
-    }
+  renderUnauth() {
+    return (
+      <Fragment>
+        <li className='nav-item'>
+          <Link className='nav-link' to='/login'>
+            Login
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link className='nav-link' to='/register'>
+            Register
+          </Link>
+        </li>
+      </Fragment>
+    );
+  }
+
+  renderAuth() {
+    const { user } = this.props;
+
+    return (
+      <Fragment>
+        <li className='nav-text'>Welcome {user.name}</li>
+        <li className='nav-item'>
+          <Link className='nav-link' to='/dashboard'>
+            Dashboard
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link className='nav-link' to='/' onClick={this.handleLogout}>
+            Logout
+          </Link>
+        </li>
+      </Fragment>
+    );
   }
 
   render() {
-    const unauthNav = (
-      <Fragment>
-        <li className='nav-item'>
-          <a className='nav-link' href='/login'>
-            Login
-          </a>
-        </li>
-        <li className='nav-item'>
-          <a className='nav-link' href='/register'>
-            Register
-          </a>
-        </li>
-      </Fragment>
-    );
-
-    const authNav = (
-      <Fragment>
-        <li className='nav-item'>
-          <a className='nav-link' href='/'>
-            Logout
-          </a>
-        </li>
-      </Fragment>
-    );
+    const { user } = this.props;
 
     return (
-      <nav className='navbar navbar-expand-lg navbar-light'>
+      <nav className='navbar sticky-top navbar-expand-lg navbar-light'>
         <div className='container'>
-          <a className='navbar-brand' href='/'>
+          <Link className='navbar-brand' to='/'>
             <h1>Sub-Split</h1>
-          </a>
-          <ul className='navbar-nav ml-auto'>
-            {this.state.authState ? authNav : unauthNav}
+          </Link>
+          <ul className='nav justify-content-end'>
+            {user ? this.renderAuth() : this.renderUnauth()}
           </ul>
         </div>
       </nav>
