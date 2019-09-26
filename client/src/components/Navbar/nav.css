@@ -1,8 +1,22 @@
-.title {
-    float: left;
+h1 {
+  font-family: 'Titillium Web', sans-serif;
+  color: #4d685a;
+  font-size: 30px;
+}
+.navbar {
+  background-color: #50ffb1;
+}
 
-  }
-  
-.login {
-    float: right;
-  }
+body {
+  background-image: url('') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.nav-link {
+  font-family: 'Titillium Web', sans-serif;
+  color: #4d685a;
+  font-size: 20px;
+}
