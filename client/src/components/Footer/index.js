@@ -1,18 +1,12 @@
 import React from 'react';
-import "./style.css"
-
-
+import './style.css';
 
 const Footer = () => {
-    return(
-        <footer>
-        <div class="container">
-        Copyright &copy; Sub-Split
-      </div>
-      </footer>
-    
-    )
-}
-
+  return (
+    <footer className='footer fixed-bottom mt-5'>
+      <span>Copyright &copy; Sub-Split</span>
+    </footer>
+  );
+};
 
 export default Footer;

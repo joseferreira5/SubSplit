@@ -1,12 +1,22 @@
-footer{
-    padding: 30px 0;
-    clear: both;
-    font-size: 12px;
-    color:  #4D685A;
-    color:  #4D685A;
-    text-align: center;
-    background: #50FFB1;
-    border-top: 8px solid whitesmoke;
-    height: 50px;
-    width:100%;
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  flex-shrink: 0;
+  padding: 30px 0;
+  font-size: 12px;
+  color: #4d685a;
+  color: #4d685a;
+  text-align: center;
+  background: #50ffb1;
+  border-top: 8px solid whitesmoke;
+  height: 50px;
+  width: 100%;
 }
