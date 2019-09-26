@@ -1,46 +1,57 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
+import auth from '../../utils/auth';
 import './nav.css';
 
-const Navbar = props => {
-  return (
-    // <div className = "header clearfix container">
-    //     <div className = "title"><h1>{props.children}</h1></div>
-    //     <div className="login">
-    //      <h3> <a href = "#" >Login/Create Account {props.login}</a></h3>
-    //     </div>
-    // </div>
-    //
+class Navbar extends Component {
+  state = {
+    authState: false
+  };
 
-    <nav className='navbar navbar-expand-lg navbar-light container '>
-      <a className='navbar-brand' href='/'>
-        <h1>Sub-Split</h1>
-      </a>
-      <button
-        className='navbar-toggler'
-        type='button'
-        data-toggle='collapse'
-        data-target='#navbarNav'
-        aria-controls='navbarNav'
-        aria-expanded='false'
-        aria-label='Toggle navigation'>
-        <span className='navbar-toggler-icon'></span>
-      </button>
-      <div className='collapse navbar-collapse' id='navbarNav'>
-        <ul className='navbar-nav ml-auto'>
-          <li className='nav-item active'>
-            <a className='nav-link' href='/dash'>
-              Dashboard<span className='sr-only'>(current)</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a className='nav-link' href='login'>
-              Login
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
-};
+  componentDidMount() {
+    if (auth.isAuthenthicated()) {
+      this.setState({ authState: true });
+    }
+  }
+
+  render() {
+    const unauthNav = (
+      <Fragment>
+        <li className='nav-item'>
+          <a className='nav-link' href='/login'>
+            Login
+          </a>
+        </li>
+        <li className='nav-item'>
+          <a className='nav-link' href='/register'>
+            Register
+          </a>
+        </li>
+      </Fragment>
+    );
+
+    const authNav = (
+      <Fragment>
+        <li className='nav-item'>
+          <a className='nav-link' href='/'>
+            Logout
+          </a>
+        </li>
+      </Fragment>
+    );
+
+    return (
+      <nav className='navbar navbar-expand-lg navbar-light'>
+        <div className='container'>
+          <a className='navbar-brand' href='/'>
+            <h1>Sub-Split</h1>
+          </a>
+          <ul className='navbar-nav ml-auto'>
+            {this.state.authState ? authNav : unauthNav}
+          </ul>
+        </div>
+      </nav>
+    );
+  }
+}
 
 export default Navbar;

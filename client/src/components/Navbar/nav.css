@@ -1,24 +1,22 @@
 h1 {
   font-family: 'Titillium Web', sans-serif;
-  color: #4D685A;
-  font-size: 75px;
+  color: #4d685a;
+  font-size: 30px;
 }
 .navbar {
-  background-color: #50FFB1;
+  background-color: #50ffb1;
 }
 
-body{
-  background-image: url("")no-repeat center center fixed; 
+body {
+  background-image: url('') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  
 }
 
-.nav-link{
+.nav-link {
   font-family: 'Titillium Web', sans-serif;
-  color: #4D685A;
-  font-size: 25px;
+  color: #4d685a;
+  font-size: 20px;
 }
-

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
@@ -7,24 +7,35 @@ import Registration from './pages/Registration';
 import Dashboard from './pages/Dashboard';
 import Wrapper from './components/Wrapper';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <Navbar />
-        <Wrapper>
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route exact path='/about' component={Home} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/register' component={Registration} />
-            <ProtectedRoute exact path='/dashboard' component={Dashboard} />
-          </Switch>
-        </Wrapper>
-      </div>
-    </Router>
-  );
+class App extends Component {
+  state = {
+    user: {
+      name: ''
+    },
+    authState: false
+  };
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <Navbar />
+          <Wrapper>
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route exact path='/about' component={Home} />
+              <Route exact path='/login' component={Login} />
+              <Route exact path='/register' component={Registration} />
+              <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+            </Switch>
+          </Wrapper>
+          <Footer />
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;

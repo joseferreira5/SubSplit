@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const LoginForm = ({
   email,
@@ -9,18 +8,15 @@ const LoginForm = ({
   onSubmit
 }) => {
   return (
-    <div className='container' id='firstcon'>
+    <div className='container m-5'>
       <div className='d-flex justify-content-center h-100'>
-        <div className='card '>
-          <div className='card-header'>
-            <h3>Sign In</h3>
+        <div className='card'>
+          <div className='card-header text-center'>
+            <h3>Log In to SubSplit</h3>
           </div>
           <div className='card-body'>
             <form onSubmit={onSubmit}>
               <div className='input-group form-group'>
-                <div className='input-group-prepend'>
-                  <span className='input-group-text'></span>
-                </div>
                 <input
                   type='text'
                   className='form-control'
@@ -30,9 +26,6 @@ const LoginForm = ({
                 />
               </div>
               <div className='input-group form-group'>
-                <div className='input-group-prepend'>
-                  <span className='input-group-text'></span>
-                </div>
                 <input
                   type='password'
                   className='form-control'
@@ -41,20 +34,18 @@ const LoginForm = ({
                   onChange={onPasswordChange}
                 />
               </div>
-              <div className='form-group'>
-                <input
-                  type='submit'
-                  value='Login'
-                  className='btn login_btn'
-                  id='signinbtn'
-                />
-              </div>
+              <input
+                type='submit'
+                value='Sign in'
+                className='btn btn-primary'
+              />
             </form>
           </div>
+
           <div className='card-footer'>
             <div className='d-flex justify-content-center'>
               <p>Don't have an account?</p>{' '}
-              <Link to='/register'>Register Here</Link>
+              <a href='/register'>Register Here</a>
             </div>
           </div>
         </div>
