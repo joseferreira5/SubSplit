@@ -1,29 +1,21 @@
 .col-info {
-    
-}
-
-.col-info {
-
-    min-height: 50vh;
+  min-height: 50vh;
 }
 
 p {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 300;
-    color: #6d6d6d;
- 
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  color: #6d6d6d;
 }
 
 h2 {
-    font-family: 'Roboto Mono', monospace;
-
+  font-family: 'Roboto Mono', monospace;
 }
 
-.sandwich{
-    transform: rotate(90deg);
-    margin-top:175px;
+.sandwich {
+  margin-top: 175px;
 }
 
-.npc{
-    height: 15px;
+.npc {
+  height: 15px;
 }

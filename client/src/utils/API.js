@@ -45,5 +45,8 @@ export default {
   },
   acceptInvite: token => {
     return axios.post(`/api/user/invite/${token}/accept`, {}, getHeaders());
+  },
+  retrieve: data => {
+    return axios.post('/api/dashboard/retrieve', data, getHeaders());
   }
 };

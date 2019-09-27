@@ -134,7 +134,7 @@ router.post('/login', (req, res, next) => {
 
     if (info !== undefined) {
       console.log(info.message);
-      res.send(info.message);
+      res.status(401).send(info.message);
     } else {
       req.logIn(user, err => {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
