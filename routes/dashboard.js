@@ -19,8 +19,6 @@ router.get(
           name: service.name,
           basePrice: service.basePrice,
           premiumPrice: service.premiumPrice,
-          username: service.UserService.username,
-          password: service.UserService.password,
           priceSelected: service.UserService.priceSelected,
           owner: true
         };
@@ -29,17 +27,17 @@ router.get(
       db.sequelize
         .query(
           `
-                  select
-                      services.name, services.basePrice, services.premiumPrice,
-                      userservices.username, userservices.password, userservices.priceSelected,
-                      concat(users.firstName, ' ', users.lastName) as ownerName
-                  from serviceshares
-                      inner join userservices on serviceshares.serviceId = userservices.serviceId
-                        and serviceshares.invitorId = userservices.userId
-                      inner join services on services.id = serviceshares.serviceId
-                      inner join users on serviceshares.invitorId = users.id
-                  where serviceshares.inviteeId = ${req.user.id};
-              `
+          select
+              services.id, services.name, services.basePrice, services.premiumPrice,
+              userservices.priceSelected, serviceshares.invitorId as ownerId,
+              concat(users.firstName, ' ', users.lastName) as ownerName
+          from serviceshares
+              inner join userservices on serviceshares.serviceId = userservices.serviceId
+                and serviceshares.invitorId = userservices.userId
+              inner join services on services.id = serviceshares.serviceId
+              inner join users on serviceshares.invitorId = users.id
+          where serviceshares.inviteeId = ${req.user.id};
+          `
         )
         .spread(results => {
           console.log('results', results);
@@ -92,7 +90,7 @@ router.post(
   }
 );
 
-// Invite someone to join service (req.body must be an array of emails)
+// Invite someone to join service
 router.post(
   '/invite',
   passport.authenticate('jwt', { session: false }),
@@ -105,10 +103,6 @@ router.post(
         serviceIds: serviceId
       })
       .then(invite => {
-        // you probably send the email from here, make sure the invite link has the token in the url
-        // something like: https://subsplit.com/invite/ + invite.token
-        // that url ---------^ should display the user creation form
-
         let transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: {
@@ -121,7 +115,7 @@ router.post(
           from: process.env.EMAIL_USER,
           to: invite.email,
           subject: 'SubSplit Request',
-          html: `<h1>Testing this out</h1><p>Please visit <a href="https://sub-split.herokuapp.com/invite/${invite.token}">here.</a></p>`
+          html: `<h1>Testing this out</h1><p>Please click on this link <a href="https://sub-split.herokuapp.com/invite/${invite.token}">here.</a></p>`
         };
 
         // send mail with defined transport object
@@ -139,12 +133,50 @@ router.post(
 );
 
 // Retrieve shared password through email
-router.get(
+router.post(
   '/retrieve',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    db.ServiceShare.findAll({ where: { id: req.user.id } }).then(user => {
-      res.json();
+    const { serviceId, ownerId } = req.body;
+
+    db.UserService.findOne({
+      where: { ServiceId: serviceId, UserId: ownerId }
+    }).then(userService => {
+      db.Service.findOne({
+        where: { id: serviceId }
+      }).then(service => {
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+
+        let mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: req.user.email,
+          subject: 'SubSplit Shared Login',
+          html: `
+            <h1>Testing this out</h1>
+            <p>Showing the login info for ${service.name}:</p><br/>
+            <p><strong>Username:</strong> ${userService.username}</p>
+            <p><strong>Password: ${userService.password}</strong> 
+            `
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message sent: %s', info.messageId);
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+          res.status(200).json({
+            msg: 'Shared login email was sent'
+          });
+        });
+      });
     });
   }
 );

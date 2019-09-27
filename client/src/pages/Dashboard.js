@@ -43,12 +43,18 @@ class Dashboard extends Component {
   };
 
   selectService = sub => {
-    console.log('SELECTED SUB', sub);
     this.setState({ selectedService: sub, selectedPlan: 'basePrice' });
   };
 
   selectPlan = plan => {
     this.setState({ selectedPlan: plan });
+  };
+
+  handleRetrieveClick = service => {
+    API.retrieve({
+      serviceId: service.id,
+      ownerId: service.ownerId
+    });
   };
 
   handleFormSubmit = () => {
@@ -152,22 +158,13 @@ class Dashboard extends Component {
                   Your Subscriptions
                 </h3>
               </div>
+
+              {/* Modal for adding a subscription */}
               <Modal
+                title='Add a Service'
                 show={show}
                 handleClose={this.hideModal}
                 handleSubmit={e => this.handleFormSubmit()}>
-                <p>Add a service!</p>
-
-                <input
-                  type='password'
-                  placeholder='Password'
-                  value={password}
-                  onChange={e =>
-                    this.setState({
-                      password: e.target.value
-                    })
-                  }
-                />
                 <input
                   type='text'
                   placeholder='Username'
@@ -178,7 +175,16 @@ class Dashboard extends Component {
                     })
                   }
                 />
-
+                <input
+                  type='password'
+                  placeholder='Password'
+                  value={password}
+                  onChange={e =>
+                    this.setState({
+                      password: e.target.value
+                    })
+                  }
+                />
                 <select
                   className='custom-select custom-select-lg mb-3'
                   value={selectedService}
@@ -192,9 +198,9 @@ class Dashboard extends Component {
                     </option>
                   ))}
                 </select>
-
                 {selectedService && this.renderPriceList()}
               </Modal>
+
               <button
                 type='button'
                 onClick={this.showModal}
@@ -211,11 +217,13 @@ class Dashboard extends Component {
             <Card
               list={subscriptionList}
               onShareClick={this.handleShareClick}
+              onRetrieveClick={this.handleRetrieveClick}
             />
           </Col>
           <Col size='md-2'></Col>
         </Row>
 
+        {/* Modal for sharing a subscription */}
         <Modal
           show={showShareModal}
           handleClose={() =>

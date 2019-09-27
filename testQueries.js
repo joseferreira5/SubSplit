@@ -6,7 +6,7 @@
         password: 'buttz123',
     });
 
-    db.service.bulkCreate([{
+    db.Service.bulkCreate([{
         name: 'Netflix',
         basePrice: 12.99,
         premiumPrice: 15.99,

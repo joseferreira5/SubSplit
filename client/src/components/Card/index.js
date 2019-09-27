@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Card = ({ list, onShareClick }) => {
+const Card = ({ list, onShareClick, onRetrieveClick }) => {
   return list.map(item => (
-    <div key={item.id} className='card card2'>
+    <div key={item.id} className='card mt-3'>
       <div className='card-header'>
         {item.name}
         <div className='float-right'>
@@ -19,7 +19,22 @@ const Card = ({ list, onShareClick }) => {
           )}
         </div>
       </div>
-      <div className='card-body test'>${item[item.priceSelected]}</div>
+      <div className='card-body'>
+        ${item[item.priceSelected]}
+        {item.owner ? (
+          <p>Split your sub! Hit the share button and invite a friend!</p>
+        ) : (
+          <button
+            type='button'
+            className='btn btn-primary'
+            onClick={e => {
+              e.stopPropagation();
+              onRetrieveClick(item);
+            }}>
+            Retrieve Shared Login
+          </button>
+        )}
+      </div>
     </div>
   ));
 };

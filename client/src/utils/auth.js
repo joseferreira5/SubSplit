@@ -2,7 +2,9 @@ export const TOKEN_KEY = 'subsplittoken';
 
 const auth = {
   isAuthenthicated() {
-    return localStorage.getItem(TOKEN_KEY) !== null;
+    const token = localStorage.getItem(TOKEN_KEY);
+
+    return token && token !== 'undefined';
   },
 
   getToken() {
