@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import API from '../utils/API';
 import auth from '../utils/auth';
+import './Invitation.css';
 
 export default class Invitation extends Component {
   state = {
@@ -30,11 +31,15 @@ export default class Invitation extends Component {
     }
 
     return (
-      <div className='container mt-5'>
+      <div className='container' id='invite-container'>
         <h3 className='text-center'>Welcome to SubSplit</h3>
 
+        <p className='text-center'>
+          This is exciting! You've been invited to share a subcription!
+        </p>
+
         <p className='text-center mt-3'>
-          Already have an account? <Link to='/login'>Log in</Link>
+          Already have an account? <Link to='/login'>Login</Link>
         </p>
 
         <p className='text-center mt-3'>or</p>

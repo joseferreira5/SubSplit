@@ -9,16 +9,17 @@ class Home extends Component {
       <Container>
         <Row>
           <Col size='md-6 info'>
-            <h2 className='mt-5 mb-3'>Welcome to Sub-split!</h2>
+            <h2 className='mt-5 mb-3'>Welcome to SubSplit!</h2>
             <p className='mb-5'>
-              Were you can manage your subscriptions and share them with
+              Where you can easily manage your subscriptions and share them with
               friends!
             </p>
             <hr />
-            <h2 className='mt-2'>How is works?</h2>
+            <h2 className='mt-2'>How does it work?</h2>
             <p>
-              To get started, create an account and add your subscriptions. You
-              can then share them with frinds to split the cost!
+              To get started, simply create an account and add your
+              subscriptions. You can then share them with friends to split the
+              cost!
             </p>
             <p>
               <strong>

@@ -3,6 +3,7 @@ import { Container, Row, Col } from '../components/Grid';
 import Modal from '../components/Modal';
 import Card from '../components/Card';
 import API from '../utils/API';
+import './Dashboard.css';
 
 class Dashboard extends Component {
   state = {
@@ -106,6 +107,15 @@ class Dashboard extends Component {
     });
   };
 
+  /*calculateMonthly() {
+    const { serviceList } = this.state;
+    const sum;
+
+    serviceList.forEach((service) => {
+      sum += service.priceSelected;
+    })
+  }*/
+
   renderPriceList() {
     const sub = this.getServiceById(this.state.selectedService);
     const priceList = [
@@ -124,7 +134,7 @@ class Dashboard extends Component {
 
     return (
       <select
-        className='custom-select custom-select-sm'
+        className='custom-select'
         value={this.state.selectedPlan}
         onChange={e => this.selectPlan(e.target.value)}>
         {priceList.map(price => (
@@ -150,67 +160,82 @@ class Dashboard extends Component {
 
     return (
       <Container>
-        <div className='row1'>
-          <Row>
-            <Col size='md-8'>
-              <div className='border rounded mt-5'>
-                <h3 className='d-flex justify-content-center'>
-                  Your Subscriptions
-                </h3>
-              </div>
+        <Row>
+          <Col size='md-3'>
+            <h3 className='mt-5'>Monthly Summary</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col size='md-6'>
+            <h5 className='ml-4'>Total from Subscriptions: COMING SOON</h5>
+          </Col>
+          <Col size='md-6'>
+            <h5 className='mr-auto'>Total Saved from Splitting: COMING SOON</h5>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col size='md-8'>
+            <div className='mt-2'>
+              <h3>Subscriptions({subscriptionList.length})</h3>
+            </div>
 
-              {/* Modal for adding a subscription */}
-              <Modal
-                title='Add a Service'
-                show={show}
-                handleClose={this.hideModal}
-                handleSubmit={e => this.handleFormSubmit()}>
-                <input
-                  type='text'
-                  placeholder='Username'
-                  value={username}
-                  onChange={e =>
-                    this.setState({
-                      username: e.target.value
-                    })
-                  }
-                />
-                <input
-                  type='password'
-                  placeholder='Password'
-                  value={password}
-                  onChange={e =>
-                    this.setState({
-                      password: e.target.value
-                    })
-                  }
-                />
-                <select
-                  className='custom-select custom-select-lg mb-3'
-                  value={selectedService}
-                  onChange={e => this.selectService(e.target.value)}>
-                  <option defaultValue='Select a Service'>
-                    Select a Service
+            <button
+              type='button'
+              className='btn btn-primary mt-1 ml-4 mb-3'
+              onClick={this.showModal}>
+              Add Subscriptions!
+            </button>
+
+            {/* Modal for adding a subscription */}
+            <Modal
+              title='Add a Service'
+              show={show}
+              handleClose={this.hideModal}
+              handleSubmit={e => this.handleFormSubmit()}>
+              <p>
+                Add the your login username and password and select your
+                subcription service and plan.
+              </p>
+              <input
+                className='form-control'
+                type='text'
+                placeholder='Username'
+                value={username}
+                onChange={e =>
+                  this.setState({
+                    username: e.target.value
+                  })
+                }
+              />
+              <input
+                className='form-control mt-2'
+                type='password'
+                placeholder='Password'
+                value={password}
+                onChange={e =>
+                  this.setState({
+                    password: e.target.value
+                  })
+                }
+              />
+              <select
+                className='custom-select mt-2 mb-3'
+                value={selectedService}
+                onChange={e => this.selectService(e.target.value)}>
+                <option defaultValue='Select a Service'>
+                  Select a Service
+                </option>
+                {serviceList.map(service => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
                   </option>
-                  {serviceList.map(service => (
-                    <option key={service.id} value={service.id}>
-                      {service.name}
-                    </option>
-                  ))}
-                </select>
-                {selectedService && this.renderPriceList()}
-              </Modal>
-
-              <button
-                type='button'
-                onClick={this.showModal}
-                className='mt-3 mb-3'>
-                Add Subscriptions!
-              </button>
-            </Col>
-            <Col size='md-2'></Col>
-          </Row>
-        </div>
+                ))}
+              </select>
+              {selectedService && this.renderPriceList()}
+            </Modal>
+          </Col>
+        </Row>
         <Row>
           <Col size='md-2'></Col>
           <Col size='md-8'>
@@ -233,7 +258,17 @@ class Dashboard extends Component {
             })
           }
           handleSubmit={this.handleShareSubmit}>
+          <p>
+            Enter the email of the person you would like to share your
+            subcription with.
+          </p>
+          <span id='warning'>
+            WARNING! You can unshare within SubSplit, however you will have to
+            change the password to your subcription account to prevent further
+            use.{' '}
+          </span>
           <input
+            className='form-control mt-2'
             placeholder='Email'
             value={shareEmail}
             onChange={e => {

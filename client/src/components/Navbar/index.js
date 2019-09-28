@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
-import './nav.css';
+import './style.css';
 
 class Navbar extends Component {
   handleLogout = e => {
@@ -16,13 +16,13 @@ class Navbar extends Component {
     return (
       <Fragment>
         <li className='nav-item'>
-          <Link className='nav-link' to='/login'>
-            Login
+          <Link className='nav-link' id='login-link' to='/login'>
+            LOG IN
           </Link>
         </li>
         <li className='nav-item'>
-          <Link className='nav-link' to='/register'>
-            Register
+          <Link className='nav-link' id='register-link' to='/register'>
+            SIGN UP
           </Link>
         </li>
       </Fragment>
@@ -34,15 +34,19 @@ class Navbar extends Component {
 
     return (
       <Fragment>
-        <li className='nav-text'>Welcome {user.name}</li>
+        <span className='navbar-text mr-4'>Welcome, {user.name}</span>
         <li className='nav-item'>
-          <Link className='nav-link' to='/dashboard'>
-            Dashboard
+          <Link className='nav-link' id='dashboard-link' to='/dashboard'>
+            DASHBOARD
           </Link>
         </li>
         <li className='nav-item'>
-          <Link className='nav-link' to='/' onClick={this.handleLogout}>
-            Logout
+          <Link
+            className='nav-link'
+            id='logout-link'
+            to='/'
+            onClick={this.handleLogout}>
+            LOG OUT
           </Link>
         </li>
       </Fragment>
@@ -54,14 +58,14 @@ class Navbar extends Component {
 
     return (
       <nav className='navbar sticky-top navbar-expand-lg navbar-light'>
-        <div className='container'>
-          <Link className='navbar-brand' to='/'>
-            <h1>Sub-Split</h1>
-          </Link>
-          <ul className='nav justify-content-end'>
-            {user ? this.renderAuth() : this.renderUnauth()}
-          </ul>
-        </div>
+        <Link className='navbar-brand ml-5' id='brand' to='/'>
+          <h1>
+            <strong>SubSplit</strong>
+          </h1>
+        </Link>
+        <ul className='nav ml-auto' id='nav'>
+          {user ? this.renderAuth() : this.renderUnauth()}
+        </ul>
       </nav>
     );
   }
