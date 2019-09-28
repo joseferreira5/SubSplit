@@ -35,7 +35,7 @@ router.get(
               inner join UserServices on ServiceShares.serviceId = UserServices.serviceId
                 and ServiceShares.invitorId = UserServices.userId
               inner join Services on Services.id = ServiceShares.serviceId
-              inner join users on ServiceShares.invitorId = Users.id
+              inner join Users on ServiceShares.invitorId = Users.id
           where ServiceShares.inviteeId = ${req.user.id};
           `
         )
