@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { AnimatedSwitch } from 'react-router-transition';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Dashboard from './pages/Dashboard';
 import Invitation from './pages/Invitation';
-import Wrapper from './components/Wrapper';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import auth from './utils/auth';
 import API from './utils/API';
+import './App.css';
 
 class App extends Component {
   state = {
@@ -47,43 +48,45 @@ class App extends Component {
 
     return (
       <Router>
-        <div>
+        <React.Fragment>
           <Navbar user={user} onLogout={this.handleLogout} />
-          <Wrapper>
-            <Switch>
-              <Route exact path='/' component={Home} />
-              <Route exact path='/about' component={Home} />
-              <Route
-                exact
-                path='/login'
-                render={() => (
-                  <Login
-                    inviteToken={inviteToken}
-                    onLogin={this.handleLogin}
-                    onInviteAccepted={this.handleInviteAccepted}
-                  />
-                )}
-              />
-              <Route
-                path='/invite/:token'
-                render={({ match }) => (
-                  <Invitation
-                    token={match.params.token}
-                    onInviteAccepted={this.handleInviteAccepted}
-                    onInviteRequested={t =>
-                      this.setState({
-                        inviteToken: t
-                      })
-                    }
-                  />
-                )}
-              />
-              <Route exact path='/register' component={Registration} />
-              <ProtectedRoute exact path='/dashboard' component={Dashboard} />
-            </Switch>
-          </Wrapper>
+          <AnimatedSwitch
+            atEnter={{ opacity: 0 }}
+            atLeave={{ opacity: 0 }}
+            atActive={{ opacity: 1 }}
+            className='switch-wrapper container'>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/about' component={Home} />
+            <Route
+              exact
+              path='/login'
+              render={() => (
+                <Login
+                  inviteToken={inviteToken}
+                  onLogin={this.handleLogin}
+                  onInviteAccepted={this.handleInviteAccepted}
+                />
+              )}
+            />
+            <Route
+              path='/invite/:token'
+              render={({ match }) => (
+                <Invitation
+                  token={match.params.token}
+                  onInviteAccepted={this.handleInviteAccepted}
+                  onInviteRequested={t =>
+                    this.setState({
+                      inviteToken: t
+                    })
+                  }
+                />
+              )}
+            />
+            <Route exact path='/register' component={Registration} />
+            <ProtectedRoute exact path='/dashboard' component={Dashboard} />
+          </AnimatedSwitch>
           <Footer />
-        </div>
+        </React.Fragment>
       </Router>
     );
   }

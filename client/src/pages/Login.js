@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import Wrapper from '../components/Wrapper';
 import LoginForm from '../components/LoginForm';
 import API from '../utils/API';
 
@@ -52,21 +53,23 @@ class Login extends Component {
     }
 
     return (
-      <LoginForm
-        email={email}
-        password={password}
-        onEmailChange={e =>
-          this.setState({
-            email: e.target.value
-          })
-        }
-        onPasswordChange={e =>
-          this.setState({
-            password: e.target.value
-          })
-        }
-        onSubmit={this.handleSubmit}
-      />
+      <Wrapper>
+        <LoginForm
+          email={email}
+          password={password}
+          onEmailChange={e =>
+            this.setState({
+              email: e.target.value
+            })
+          }
+          onPasswordChange={e =>
+            this.setState({
+              password: e.target.value
+            })
+          }
+          onSubmit={this.handleSubmit}
+        />
+      </Wrapper>
     );
   }
 }
