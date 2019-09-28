@@ -28,15 +28,15 @@ router.get(
         .query(
           `
           select
-              services.id, services.name, services.basePrice, services.premiumPrice,
-              userservices.priceSelected, serviceshares.invitorId as ownerId,
-              concat(users.firstName, ' ', users.lastName) as ownerName
-          from serviceshares
-              inner join userservices on serviceshares.serviceId = userservices.serviceId
-                and serviceshares.invitorId = userservices.userId
-              inner join services on services.id = serviceshares.serviceId
-              inner join users on serviceshares.invitorId = users.id
-          where serviceshares.inviteeId = ${req.user.id};
+              Services.id, Services.name, Services.basePrice, Services.premiumPrice,
+              UserServices.priceSelected, ServiceShares.invitorId as ownerId,
+              concat(Users.firstName, ' ', Users.lastName) as ownerName
+          from ServiceShares
+              inner join UserServices on ServiceShares.serviceId = UserServices.serviceId
+                and ServiceShares.invitorId = UserServices.userId
+              inner join Services on Services.id = ServiceShares.serviceId
+              inner join users on ServiceShares.invitorId = Users.id
+          where ServiceShares.inviteeId = ${req.user.id};
           `
         )
         .spread(results => {
